@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Юлия Герасимова](https://up.htmlacademy.ru/javascript/18/user/1014183).
-* Наставник: `Неизвестно`.
+* Наставник: [Екатерина Кащенко] (https://htmlacademy.ru/profile/id109008).
 
 ---
 
