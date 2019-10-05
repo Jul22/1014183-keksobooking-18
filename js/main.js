@@ -42,6 +42,16 @@ var getRandomArray = function (arr) {
 };
 
 var createOffersData = function (amount) {
+  var transformTypeToString = function (type) {
+    switch (type) {
+      case 'palace': return 'Дворец';
+      case 'flat': return 'Квартира';
+      case 'bungalo': return 'Бунгало';
+      case 'house': return 'Дом';
+    }
+    return type;
+  };
+
   var offersArray = [];
   for (var i = 0; i <= amount; i++) {
     offersArray.push(
@@ -52,10 +62,10 @@ var createOffersData = function (amount) {
           offer: {
             title: TITLES,
             address: ADDRESSES,
-            type: TYPES[generateRandomNumber(0, TYPES.length)],
+            type: transformTypeToString(TYPES[generateRandomNumber(0, TYPES.length - 1)]),
             rooms: generateRandomNumber(1, 3),
             guests: generateRandomNumber(1, 5),
-            checkin: CHECKINS[generateRandomNumber(0, CHECKINS.length)],
+            checkin: CHECKINS[generateRandomNumber(0, CHECKINS.length - 1)],
             checkout: CHECKOUTS[generateRandomNumber(0, CHECKOUTS.length)],
             price: PRICES,
             features: getRandomArray(FEATURES),
@@ -111,7 +121,9 @@ var renderCard = function (card) {
 };
 
 var offers = createOffersData(AMOUNT_OFFER);
+insertPins(offers);
 var firstItemCardInArray = renderCard(offers[0]);
 
 
-map.insertBefore(firstItemCardInArray, insertPins(offers));
+map.insertBefore(firstItemCardInArray, map.querySelector('.map__filters-container'));
+
