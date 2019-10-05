@@ -27,7 +27,7 @@ var mapPins = document.querySelector('.map__pins');
 var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
 // Generating random number
-var generateRandomNumber = function (min, max) {
+var getRandomNumber = function (min, max) {
   var randomNumber = min + Math.random() * (max + 1 - min);
   return Math.floor(randomNumber);
 };
@@ -41,17 +41,17 @@ var getRandomArray = function (arr) {
   return randomArr;
 };
 
-var createOffersData = function (amount) {
-  var transformTypeToString = function (type) {
-    switch (type) {
-      case 'palace': return 'Дворец';
-      case 'flat': return 'Квартира';
-      case 'bungalo': return 'Бунгало';
-      case 'house': return 'Дом';
-    }
-    return type;
-  };
+var transformTypeToString = function (type) {
+  switch (type) {
+    case 'palace': return 'Дворец';
+    case 'flat': return 'Квартира';
+    case 'bungalo': return 'Бунгало';
+    case 'house': return 'Дом';
+  }
+  return type;
+};
 
+var createOffersData = function (amount) {
   var offersArray = [];
   for (var i = 0; i <= amount; i++) {
     offersArray.push(
@@ -62,19 +62,19 @@ var createOffersData = function (amount) {
           offer: {
             title: TITLES,
             address: ADDRESSES,
-            type: transformTypeToString(TYPES[generateRandomNumber(0, TYPES.length - 1)]),
-            rooms: generateRandomNumber(1, 3),
-            guests: generateRandomNumber(1, 5),
-            checkin: CHECKINS[generateRandomNumber(0, CHECKINS.length - 1)],
-            checkout: CHECKOUTS[generateRandomNumber(0, CHECKOUTS.length)],
+            type: transformTypeToString(TYPES[getRandomNumber(0, TYPES.length - 1)]),
+            rooms: getRandomNumber(1, 3),
+            guests: getRandomNumber(1, 5),
+            checkin: CHECKINS[getRandomNumber(0, CHECKINS.length - 1)],
+            checkout: CHECKOUTS[getRandomNumber(0, CHECKOUTS.length)],
             price: PRICES,
             features: getRandomArray(FEATURES),
             description: DESCRIPTION,
-            photos: PHOTOS[generateRandomNumber(0, PHOTOS.length - 1)]
+            photos: PHOTOS[getRandomNumber(0, PHOTOS.length - 1)]
           },
           location: {
-            x: generateRandomNumber(LOCATION_X_MIN, LOCATION_X_MAX),
-            y: generateRandomNumber(LOCATION_Y_MIN, LOCATION_Y_MAX)
+            x: getRandomNumber(LOCATION_X_MIN, LOCATION_X_MAX),
+            y: getRandomNumber(LOCATION_Y_MIN, LOCATION_Y_MAX)
           }
         });
   }
