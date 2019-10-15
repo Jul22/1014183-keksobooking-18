@@ -18,7 +18,7 @@ var LOCATION_Y_MAX = 630;
 
 // Activating map
 var map = document.querySelector('.map');
-map.classList.remove('map--faded');
+
 
 // Adding container for pins
 var mapPins = document.querySelector('.map__pins');
@@ -121,9 +121,82 @@ var renderCard = function (card) {
 };
 
 var offers = createOffersData(AMOUNT_OFFER);
-insertPins(offers);
+//  insertPins(offers);
 var firstItemCardInArray = renderCard(offers[0]);
 
 
-map.insertBefore(firstItemCardInArray, map.querySelector('.map__filters-container'));
+//  map.insertBefore(firstItemCardInArray, map.querySelector('.map__filters-container'));
 
+var pinMain = map.querySelector('.map__pin--main'); // searching for main pin
+var adForm = document.querySelector('.ad-form'); // searching for ad-form
+var fieldset = adForm.querySelectorAll('fieldset'); // searching for all fieldsets in  ad-form
+var ENTER_KEYCODE = 13;
+
+
+var setAddress = function () {
+  var addressInput = document.querySelector('input[name=address]');
+
+  addressInput.setAttribute('value', (pinMain.offsetTop + Math.floor(PIN_WIDTH / 2)) + ', ' + (pinMain.offsetLeft + Math.floor(PIN_HEIGHT / 2)));
+  addressInput.setAttribute('readonly', '');
+};
+
+setAddress();
+
+for (var i = 0; i < fieldset.length; i++) {
+  fieldset[i].setAttribute('disabled', 'disabled');
+}
+var resetDisable = function (obj) {
+  for (var j = 0; j < obj.length; j++) {
+    obj[j].removeAttribute('disabled', 'disabled');
+  }
+};
+
+var activatingPage = function () {
+  resetDisable(fieldset);
+  map.classList.remove('map--faded');
+  adForm.classList.remove('ad-form--disabled');
+  insertPins(offers);
+  map.insertBefore(firstItemCardInArray, map.querySelector('.map__filters-container'));
+};
+
+pinMain.addEventListener('mousedown', function () {
+  activatingPage();
+});
+
+pinMain.addEventListener('keydown', function (evt) {
+  evt.preventDefault();
+  if (evt.keyCode === ENTER_KEYCODE) {
+    activatingPage();
+  }
+});
+
+
+var roomsAmount = document.querySelector('#room_number');
+var guestsAmount = document.querySelector('#capacity');
+
+guestsAmount.innerHTML = '<option value="1">для 1 гостя</option>';
+
+
+var setGuestsAmountHandler = function () {
+  var elementIndex = roomsAmount.selectedIndex;
+
+  if (elementIndex === 0) {
+    guestsAmount.innerHTML = '<option value="1">для 1 гостя</option>';
+  }
+
+  if (elementIndex === 1) {
+    guestsAmount.innerHTML = '<option value="2">для 2 гостей</option><option value="1">для 1 гостя</option>';
+  }
+
+  if (elementIndex === 2) {
+    guestsAmount.innerHTML = '<option value="3" selected>для 3 гостей</option><option value="2">для 2 гостей</option><option value="1">для 1 гостя</option>';
+  }
+
+  if (elementIndex === 3) {
+    guestsAmount.innerHTML = '<option value="0">не для гостей</option>';
+  }
+};
+
+roomsAmount.addEventListener('change', function () {
+  setGuestsAmountHandler();
+});
