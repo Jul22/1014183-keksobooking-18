@@ -124,7 +124,6 @@ var renderCard = function (card) {
   cardElement.querySelector('.popup__description').textContent = card.offer.description;
   cardElement.querySelector('.popup__photo').setAttribute('src', card.offer.photos);
   cardElement.querySelector('.popup__avatar').setAttribute('src', card.author.avatar);
-  
   cardElement.querySelector('.popup__close').addEventListener('click', function () {
     map.removeChild(cardElement);
   });
@@ -166,14 +165,14 @@ var resetDisable = function (obj) {
   }
 };
 
-var deactivatingPage = function () {
+var deactivatePage = function () {
   adForm.classList.add('ad-form--disabled');
   disableFieldset(fieldset);
 };
 
-deactivatingPage();
+deactivatePage();
 
-var activatingPage = function () {
+var activatePage = function () {
   resetDisable(fieldset);
   map.classList.remove('map--faded');
   adForm.classList.remove('ad-form--disabled');
@@ -182,47 +181,47 @@ var activatingPage = function () {
 };
 
 pinMain.addEventListener('mousedown', function () {
-  activatingPage();
+  activatePage();
 });
 
 pinMain.addEventListener('keydown', function (evt) {
   evt.preventDefault();
   if (evt.keyCode === ENTER_KEYCODE) {
-    activatingPage();
+    activatePage();
   }
 });
 
 //  Function for validation amount of guests
 var roomsAmountSelector = adForm.querySelector('#room_number'); // Селектор выбора колличества комнат
-var questsAmountSelector = adForm.querySelector('#capacity'); // Селектор выбора колличества гостей
+var guestsAmountSelector = adForm.querySelector('#capacity'); // Селектор выбора колличества гостей
 
-var getMatchingInputsValidation = function () {
+var getMatchInputsValidation = function () {
   var roomsSelectedValue = parseInt(roomsAmountSelector[roomsAmountSelector.selectedIndex].value, 10);
-  var questsOptions = questsAmountSelector.options;
+  var guestsOptions = guestsAmountSelector.options;
+  var maxRoomsCount = 100;
+  for (var i = 0; i < guestsOptions.length; i++) {
+    var questsOptionValue = parseInt(guestsAmountSelector.options[i].value, 10);
 
-  for (var i = 0; i < questsOptions.length; i++) {
-    var questsOptionValue = parseInt(questsAmountSelector.options[i].value, 10);
-
-    if (roomsSelectedValue === 100) {
+    if (roomsSelectedValue === maxRoomsCount) {
       if (questsOptionValue !== 0) {
-        questsOptions[i].disabled = true;
+        guestsOptions[i].disabled = true;
       } else {
-        questsOptions[i].disabled = false;
-        questsOptions[i].selected = true;
+        guestsOptions[i].disabled = false;
+        guestsOptions[i].selected = true;
       }
     } else {
       if (questsOptionValue > roomsSelectedValue || questsOptionValue === 0) {
-        questsOptions[i].disabled = true;
+        guestsOptions[i].disabled = true;
       } else {
-        questsOptions[i].disabled = false;
-        questsOptions[i].selected = true;
+        guestsOptions[i].disabled = false;
+        guestsOptions[i].selected = true;
       }
     }
   }
 };
 
-getMatchingInputsValidation();
+getMatchInputsValidation();
 
-roomsAmountSelector.addEventListener('change', getMatchingInputsValidation);
+roomsAmountSelector.addEventListener('change', getMatchInputsValidation);
 
 
