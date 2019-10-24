@@ -7,6 +7,7 @@
   var map = document.querySelector('.map');
   var pinMain = map.querySelector('.map__pin--main');
   var offers = window.data.offers;
+
   var renderPin = function () {
     var fragment = document.createDocumentFragment();
     var mapPins = document.querySelector('.map__pins');
@@ -29,9 +30,9 @@
 
   var fieldset = adForm.querySelectorAll('fieldset');
 
-  var disableFieldset = function () {
-    for (var i = 0; i < fieldset.length; i++) {
-      fieldset[i].setAttribute('disabled', 'disabled');
+  var disableFieldset = function (obj) {
+    for (var i = 0; i < obj.length; i++) {
+      obj[i].setAttribute('disabled', 'disabled');
     }
   };
 
@@ -58,6 +59,7 @@
     map.appendChild(randomItemCardInArray);
     renderPin();
   };
+
   window.map = {
     renderPin: renderPin,
     map: map,

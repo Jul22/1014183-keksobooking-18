@@ -19,6 +19,7 @@
     }
     return randomArr;
   };
+
   window.util = {
     PIN_WIDTH: PIN_WIDTH,
     PIN_HEIGHT: PIN_HEIGHT,

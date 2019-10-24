@@ -5,6 +5,32 @@
   var pinMain = window.map.pinMain;
   var PIN_WIDTH = window.util.PIN_WIDTH;
   var PIN_HEIGHT = window.util.PIN_HEIGHT;
+  var checkIn = adForm.querySelector('#timein');
+  var checkOut = adForm.querySelector('#timeout');
+
+  checkIn.addEventListener('change', function () {
+    checkOut.value = checkIn.value;
+  });
+  checkOut.addEventListener('change', function () {
+    checkIn.value = checkOut.value;
+  });
+
+  var title = adForm.querySelector('#title');
+
+  var checkTitle = function () {
+    if (title.validity.tooShort) {
+      title.setCustomValidity('Минимальная длина заголовка 30 символов');
+    } else if (title.validity.tooLong) {
+      title.setCustomValidity('Максимальная длина заголовка 100 символов');
+    } else if (title.validity.valueMissing) {
+      title.setCustomValidity('Обязательное поле');
+    } else {
+      title.setCustomValidity('');
+    }
+  };
+
+  title.addEventListener('change', checkTitle);
+
   var setAddress = function () {
     var addressInput = document.querySelector('input[name=address]');
 

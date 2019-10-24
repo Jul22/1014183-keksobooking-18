@@ -2,6 +2,7 @@
 
 (function () {
   var map = window.map.map;
+
   var renderCard = function (card) {
     var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
     var cardElement = cardTemplate.cloneNode(true);

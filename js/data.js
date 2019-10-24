@@ -1,42 +1,43 @@
 'use strict';
 
 (function () {
+  var AMOUNT_OFFER = 8;
+  var TITLES = ['Уютное гнездышко для молодоженов'];
+  var ADDRESSES = ['102, 0082 Tōkyō-to, Chiyoda-ku, Ichibanchō, 14−3'];
+  var PRICES = 5200;
+  var TYPES = ['palace', 'flat', 'house', 'bungalo'];
+  var CHECKINS = ['12:00', '13:00', '14:00'];
+  var CHECKOUTS = ['12:00', '13:00', '14:00'];
+  var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+  var DESCRIPTION = ['Великолепная квартира-студия в центре Токио. Подходит как туристам, так и бизнесменам. Квартира полностью укомплектована и недавно отремонтирована.'];
+  var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
+  var LOCATION_X_MIN = 0;
+  var LOCATION_X_MAX = document.querySelector('.map__pins').offsetWidth;
+  var LOCATION_Y_MIN = 130;
+  var LOCATION_Y_MAX = 630;
+  var getRandomNumber = window.util.getRandomNumber;
+  var getRandomArray = window.util.getRandomArray;
+  var transformTypeToString = function (type) {
+    switch (type) {
+      case 'palace':
+        type = 'Дворец';
+        break;
+      case 'flat':
+        type = 'Квартира';
+        break;
+      case 'bungalo':
+        type = 'Бунгало';
+        break;
+      case 'house':
+        type = 'Дом';
+        break;
+    }
+    return type;
+  };
+
   var createOffersData = function () {
-    var transformTypeToString = function (type) {
-      switch (type) {
-        case 'palace':
-          type = 'Дворец';
-          break;
-        case 'flat':
-          type = 'Квартира';
-          break;
-        case 'bungalo':
-          type = 'Бунгало';
-          break;
-        case 'house':
-          type = 'Дом';
-          break;
-      }
-      return type;
-    };
     var offersArray = [];
 
-    var AMOUNT_OFFER = 8;
-    var TITLES = ['Уютное гнездышко для молодоженов'];
-    var ADDRESSES = ['102, 0082 Tōkyō-to, Chiyoda-ku, Ichibanchō, 14−3'];
-    var PRICES = 5200;
-    var TYPES = ['palace', 'flat', 'house', 'bungalo'];
-    var CHECKINS = ['12:00', '13:00', '14:00'];
-    var CHECKOUTS = ['12:00', '13:00', '14:00'];
-    var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-    var DESCRIPTION = ['Великолепная квартира-студия в центре Токио. Подходит как туристам, так и бизнесменам. Квартира полностью укомплектована и недавно отремонтирована.'];
-    var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
-    var LOCATION_X_MIN = 0;
-    var LOCATION_X_MAX = document.querySelector('.map__pins').offsetWidth;
-    var LOCATION_Y_MIN = 130;
-    var LOCATION_Y_MAX = 630;
-    var getRandomNumber = window.util.getRandomNumber;
-    var getRandomArray = window.util.getRandomArray;
     for (var i = 0; i <= AMOUNT_OFFER; i++) {
       offersArray.push(
           {

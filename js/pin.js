@@ -9,6 +9,7 @@
     pinElement.style.top = obj.location.y - window.util.PIN_HEIGHT + 'px';
     pinElement.querySelector('img').setAttribute('src', obj.author.avatar);
     pinElement.querySelector('img').setAttribute('alt', obj.offer.title);
+
     var onPinClick = function () {
       var mapPins = document.querySelectorAll('.map__pin');
       var mapCard = document.querySelector('.map__card');
