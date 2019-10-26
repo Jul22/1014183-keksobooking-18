@@ -5,6 +5,36 @@
   var pinMain = window.map.pinMain;
   var PIN_WIDTH = window.util.PIN_WIDTH;
   var PIN_HEIGHT = window.util.PIN_HEIGHT;
+
+  var housingTypeMinPrice = {
+    bungalo: 0,
+    flat: 1000,
+    house: 5000,
+    palace: 10000
+  };
+
+  var houseType = adForm.querySelector('#type');
+  houseType.addEventListener('change', function (evt) {
+    var priceInput = adForm.querySelector('#price');
+    priceInput.value = '';
+    priceInput.placeholder = housingTypeMinPrice[evt.target.value];
+    priceInput.setAttribute('min', housingTypeMinPrice[evt.target.value]);
+  });
+  var price = adForm.querySelector('#price');
+  var MAX_PRICE = 1000000;
+
+  price.setAttribute('max', MAX_PRICE);
+  price.setAttribute('required', '');
+
+  var checkPrice = function (target) {
+    if (housingTypeMinPrice[target.value] < target.min) {
+      price.setCustomValidity('Минимальное значение цены за ночь для данного типа жилья ' + target.min + ' рублей');
+    }
+  };
+  checkPrice(price);
+
+
+  //  Время прибытия
   var checkIn = adForm.querySelector('#timein');
   var checkOut = adForm.querySelector('#timeout');
 
@@ -16,21 +46,26 @@
   });
 
   var title = adForm.querySelector('#title');
+  var TITLE_MINLENGTH = 30;
+  var TITLE_MAXLENGTH = 100;
 
-  var checkTitle = function () {
-    if (title.validity.tooShort) {
-      title.setCustomValidity('Минимальная длина заголовка 30 символов');
-    } else if (title.validity.tooLong) {
-      title.setCustomValidity('Максимальная длина заголовка 100 символов');
-    } else if (title.validity.valueMissing) {
+  title.setAttribute('minlength', TITLE_MINLENGTH);
+  title.setAttribute('maxlength', TITLE_MAXLENGTH);
+  title.setAttribute('required', '');
+
+  title.addEventListener('change', function () {
+    if (title.value.length < TITLE_MINLENGTH) {
+      title.setCustomValidity('Заголовок должен содержать не менее 30 символов');
+    } else if (title.value.length > TITLE_MAXLENGTH) {
+      title.setCustomValidity('Заголовок не должен привышать ста символов');
+    } else if (title.missingValue) {
       title.setCustomValidity('Обязательное поле');
     } else {
       title.setCustomValidity('');
     }
-  };
+  });
 
-  title.addEventListener('change', checkTitle);
-
+  // address
   var setAddress = function () {
     var addressInput = document.querySelector('input[name=address]');
 
