@@ -5,6 +5,8 @@
   var pinMain = window.map.pinMain;
   var PIN_WIDTH = window.util.PIN_WIDTH;
   var PIN_HEIGHT = window.util.PIN_HEIGHT;
+  var TITLE_MINLENGTH = 30;
+  var TITLE_MAXLENGTH = 100;
 
   var housingTypeMinPrice = {
     bungalo: 0,
@@ -35,19 +37,22 @@
 
 
   //  Время прибытия
-  var checkIn = adForm.querySelector('#timein');
-  var checkOut = adForm.querySelector('#timeout');
+  var checkTime = adForm.querySelector('.ad-form__element--time');
 
-  checkIn.addEventListener('change', function () {
-    checkOut.value = checkIn.value;
-  });
-  checkOut.addEventListener('change', function () {
-    checkIn.value = checkOut.value;
-  });
+  var onChangeTime = function (evt) {
+    switch (evt.target.name) {
+      case 'timein':
+        adForm.timeout.value = evt.target.value;
+        break;
+      case 'timeout':
+        adForm.timein.value = evt.target.value;
+        break;
+    }
+  };
+
+  checkTime.addEventListener('change', onChangeTime);
 
   var title = adForm.querySelector('#title');
-  var TITLE_MINLENGTH = 30;
-  var TITLE_MAXLENGTH = 100;
 
   title.setAttribute('minlength', TITLE_MINLENGTH);
   title.setAttribute('maxlength', TITLE_MAXLENGTH);
