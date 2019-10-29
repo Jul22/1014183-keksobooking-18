@@ -4,6 +4,9 @@
   var map = window.map.map;
 
   var renderCard = function (card) {
+    if (map.querySelector('.map__card')) {
+      map.removeChild(cardElement);
+    }
     var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
     var cardElement = cardTemplate.cloneNode(true);
     cardElement.querySelector('.popup__title').textContent = card.offer.title;
