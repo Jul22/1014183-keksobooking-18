@@ -15,10 +15,16 @@
     cardElement.querySelector('.popup__description').textContent = card.offer.description;
     cardElement.querySelector('.popup__photo').setAttribute('src', card.offer.photos);
     cardElement.querySelector('.popup__avatar').setAttribute('src', card.author.avatar);
+
     cardElement.querySelector('.popup__close').addEventListener('click', function () {
       map.removeChild(cardElement);
     });
 
+    cardElement.querySelector('.popup__close').addEventListener('keydown', function (evt) {
+      if (evt.keyCode === window.util.ESC_KEYCODE) {
+        map.removeChild(cardElement);
+      }
+    });
     return cardElement;
   };
   window.card = {
