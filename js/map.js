@@ -50,8 +50,6 @@
   deactivatePage();
 
   var activatePage = function () {
-    var renderCard = window.card.renderCard;
-    var getRandomNumber = window.util.getRandomNumber;
     resetDisable(fieldset);
     map.classList.remove('map--faded');
     adForm.classList.remove('ad-form--disabled');
