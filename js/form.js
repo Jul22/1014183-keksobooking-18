@@ -112,4 +112,7 @@
   getMatchInputsValidation();
 
   roomsAmountSelector.addEventListener('change', getMatchInputsValidation);
+  window.form = {
+    setAddress: setAddress
+  };
 })();
