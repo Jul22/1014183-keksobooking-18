@@ -7,10 +7,12 @@
   var MAIN_PIN_POSITION_X_MAX = 1200;
   var MAIN_PIN_SIZE = 62;
   var MAIN_PIN_TAIL = 22;
+  var PINS_AMOUNT = 8;
   var ENTER_KEYCODE = window.util.ENTER_KEYCODE;
   var adForm = document.querySelector('.ad-form');
   var map = document.querySelector('.map');
   var pinMain = map.querySelector('.map__pin--main');
+  var offers = window.data.offers;
 
   // Moving Main Pin
   pinMain.addEventListener('mousedown', function (evt) {
@@ -23,7 +25,7 @@
       y: evt.clientY
     };
 
-    function onMouseMove(moveEvt) {
+    var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
 
       var shift = {
@@ -47,14 +49,14 @@
         pinMain.style.top = (pinMain.offsetTop - shift.y) + 'px';
       }
       window.form.setAddress();
-    }
+    };
 
-    function onMouseUp(upEvt) {
+    var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
 
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
-    }
+    };
 
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
@@ -88,24 +90,22 @@
 
   deactivatePage();
 
-  var PINS_AMOUNT = 8;
-  var offers = window.data.offers;
-
-  var insertPinsInMap = function () {
+  var insertPinsInMap = function (pins) {
     var fragment = document.createDocumentFragment();
     var mapPins = document.querySelector('.map__pins');
-    for (var i = 0; i < PINS_AMOUNT; i++) {
+    for (var i = 0; i < pins; i++) {
       fragment.appendChild(window.pin.getPinElement(offers[i]));
     }
     mapPins.appendChild(fragment);
     return fragment;
   };
 
+
   var activatePage = function () {
     resetDisable(fieldset);
     map.classList.remove('map--faded');
     adForm.classList.remove('ad-form--disabled');
-    insertPinsInMap();
+    insertPinsInMap(PINS_AMOUNT);
   };
 
   window.map = {
