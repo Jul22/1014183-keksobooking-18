@@ -26,10 +26,32 @@
     window.backend.load(window.pin.onLoadSuccessHandler, window.backend.errorHandler);
     window.form.setAddress();
   };
+
+  var deletePins = function () {
+    var pins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+    pins.forEach(function (pin) {
+      var pinsContainer = document.querySelector('.map__pins');
+      pinsContainer.removeChild(pin);
+    });
+  };
+
+  var disActivatePage = function () {
+    toggleFieldSets(true);
+    adForm.reset();
+    map.classList.add('map--faded');
+    adForm.classList.add('ad-form--disabled');
+    var mapCard = document.querySelector('.map__card');
+    if (mapCard) {
+      map.removeChild(mapCard);
+    }
+    deletePins();
+    window.form.setAddress();
+  };
   window.map = {
     map: map,
     adForm: adForm,
     pinMain: pinMain,
-    activatePage: activatePage
+    activatePage: activatePage,
+    disActivatePage: disActivatePage
   };
 })();
