@@ -35,6 +35,13 @@
     });
   };
 
+  var startPositionX = pinMain.offsetLeft;
+  var startPositionY = pinMain.offsetTop;
+  var setStartCoords = function () {
+    pinMain.style.left = startPositionX + 'px';
+    pinMain.style.top = startPositionY + 'px';
+  };
+
   var disActivatePage = function () {
     toggleFieldSets(true);
     adForm.reset();
@@ -45,6 +52,7 @@
       map.removeChild(mapCard);
     }
     deletePins();
+    setStartCoords();
     window.form.setAddress();
   };
   window.map = {
