@@ -39,19 +39,18 @@
     xhr.send(data);
   };
 
-  var errorHandler = function (errorMessage) {
+  var errorHandler = function () {
     var errorTemplate = document.querySelector('#error').content.querySelector('.error');
     var errorElement = errorTemplate.cloneNode(true);
-    var errorText = errorTemplate.querySelector('p');
+    var errorText = errorTemplate.querySelector('.error__message');
     var errorButton = errorElement.querySelector('.error__button');
-    errorText.textContent = errorMessage;
+    errorText.textContent = 'Произошла ошибка';
     mainSection.appendChild(errorElement);
 
     mainSection.appendChild(errorElement);
 
     var onCloseErrorClick = function () {
-      var error = mainSection.querySelector('.error');
-      error.remove();
+      mainSection.removeChild(errorElement);
 
       errorButton.removeEventListener('click', onCloseErrorClick);
       mainSection.removeEventListener('click', onCloseErrorClick);
@@ -60,8 +59,7 @@
 
     var onCloseErrorEsc = function (evt) {
       if (evt.keyCode === window.util.ESC_KEYCODE) {
-        var error = mainSection.querySelector('.error');
-        error.remove();
+        mainSection.removeChild(errorElement);
       }
       errorButton.removeEventListener('click', onCloseErrorClick);
       mainSection.removeEventListener('click', onCloseErrorClick);
@@ -80,15 +78,13 @@
     mainSection.appendChild(successElement);
 
     var successClose = function () {
-      var message = mainSection.querySelector('.success');
-      message.remove();
+      mainSection.removeChild(successElement);
       mainSection.removeEventListener('click', successClose);
     };
 
     var onCloseSuccessEsc = function (evt) {
       if (evt.keyCode === window.util.ESC_KEYCODE) {
-        var message = mainSection.querySelector('.success');
-        message.remove();
+        mainSection.removeChild(successElement);
       }
       document.removeEventListener('keydown', onCloseSuccessEsc);
     };

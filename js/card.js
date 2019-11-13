@@ -63,7 +63,7 @@
       map.removeChild(cardElement);
     });
 
-    cardElement.querySelector('.popup__close').addEventListener('keydown', function (evt) {
+    document.addEventListener('keydown', function (evt) {
       if (evt.keyCode === window.util.ESC_KEYCODE) {
         map.removeChild(cardElement);
       }

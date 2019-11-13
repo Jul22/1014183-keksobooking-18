@@ -118,7 +118,13 @@
     window.backend.save(new FormData(adForm), window.backend.errorHandler, window.backend.successMessageHandler);
     window.map.disActivatePage();
   });
+
+  adForm.addEventListener('reset', function (evt) {
+    evt.preventDefault();
+    window.map.disActivatePage();
+  });
   window.form = {
-    setAddress: setAddress
+    setAddress: setAddress,
+    getMatchInputsValidation: getMatchInputsValidation
   };
 })();

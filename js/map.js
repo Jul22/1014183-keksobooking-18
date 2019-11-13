@@ -54,6 +54,13 @@
     deletePins();
     setStartCoords();
     window.form.setAddress();
+    var titleElement = adForm.querySelector('#title');
+    var priceElement = adForm.querySelector('#price');
+    var textareaElement = adForm.querySelector('#description');
+
+    titleElement.value = '';
+    priceElement.value = '';
+    textareaElement.value = '';
   };
   window.map = {
     map: map,
