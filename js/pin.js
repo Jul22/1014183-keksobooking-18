@@ -29,7 +29,7 @@
     serverDataArr.forEach(function (pin) {
       pinsContainer.appendChild(getPinElement(pin));
     });
-  }
+  };
 
   var onLoadSuccessHandler = function (serverDataArr) {
     window.offers = serverDataArr;
