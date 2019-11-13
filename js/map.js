@@ -47,10 +47,7 @@
     adForm.reset();
     map.classList.add('map--faded');
     adForm.classList.add('ad-form--disabled');
-    var mapCard = document.querySelector('.map__card');
-    if (mapCard) {
-      map.removeChild(mapCard);
-    }
+    window.card.removeCard();
     deletePins();
     setStartCoords();
     window.form.setAddress();
@@ -67,6 +64,7 @@
     adForm: adForm,
     pinMain: pinMain,
     activatePage: activatePage,
-    disActivatePage: disActivatePage
+    disActivatePage: disActivatePage,
+    deletePins: deletePins
   };
 })();
