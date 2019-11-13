@@ -30,10 +30,23 @@
       pinsContainer.appendChild(getPinElement(pin));
     });
   };
+  var filterForm = document.querySelector('.map__filters');
+  var housingType = filterForm.querySelector('#housing-type');
+  var MAX_OFFERS_AMOUNT = 5;
+  var getHousingType = function (element) {
+    return housingType.value === 'any' ? true : element.offer.type === housingType.value;
+  };
+  var filterAll = function (data) {
+    return data
+      .filter(function (element) {
+        return getHousingType(element);
+      })
+      .slice(0, MAX_OFFERS_AMOUNT);
+  };
 
 
   var onLoadSuccessHandler = function (serverDataArr) {
-    renderPins(serverDataArr);
+    renderPins(filterAll(serverDataArr));
   };
   window.pin = {
     getPinElement: getPinElement,
