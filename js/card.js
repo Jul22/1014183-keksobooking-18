@@ -45,6 +45,13 @@
     return imgElementString;
   };
 
+  var removeCard = function () {
+    var mapCardElement = document.querySelector('.map__card');
+    if (mapCardElement) {
+      mapCardElement.remove();
+    }
+  };
+
   var renderCard = function (card) {
     var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
     var cardElement = cardTemplate.cloneNode(true);
@@ -71,6 +78,7 @@
     return cardElement;
   };
   window.card = {
-    renderCard: renderCard
+    renderCard: renderCard,
+    removeCard: removeCard
   };
 })();
