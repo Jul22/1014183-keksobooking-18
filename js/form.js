@@ -7,6 +7,11 @@
   var PIN_HEIGHT = window.util.PIN_HEIGHT;
   var TITLE_MINLENGTH = 30;
   var TITLE_MAXLENGTH = 100;
+  var MAX_PRICE = 1000000;
+  var price = adForm.querySelector('#price');
+  var title = adForm.querySelector('#title');
+  var roomsAmountSelector = adForm.querySelector('#room_number'); // Селектор выбора колличества комнат
+  var guestsAmountSelector = adForm.querySelector('#capacity'); // Селектор выбора колличества гостей
 
   var housingTypeMinPrice = {
     bungalo: 0,
@@ -22,8 +27,6 @@
     priceInput.placeholder = housingTypeMinPrice[evt.target.value];
     priceInput.setAttribute('min', housingTypeMinPrice[evt.target.value]);
   });
-  var price = adForm.querySelector('#price');
-  var MAX_PRICE = 1000000;
 
   price.setAttribute('max', MAX_PRICE);
   price.setAttribute('required', '');
@@ -52,8 +55,6 @@
 
   checkTime.addEventListener('change', onChangeTime);
 
-  var title = adForm.querySelector('#title');
-
   title.setAttribute('minlength', TITLE_MINLENGTH);
   title.setAttribute('maxlength', TITLE_MAXLENGTH);
   title.setAttribute('required', '');
@@ -81,8 +82,6 @@
   setAddress();
 
   //  Function for validation amount of guests
-  var roomsAmountSelector = adForm.querySelector('#room_number'); // Селектор выбора колличества комнат
-  var guestsAmountSelector = adForm.querySelector('#capacity'); // Селектор выбора колличества гостей
 
   var getMatchInputsValidation = function () {
     var roomsSelectedValue = parseInt(roomsAmountSelector[roomsAmountSelector.selectedIndex].value, 10);
@@ -114,9 +113,11 @@
   roomsAmountSelector.addEventListener('change', getMatchInputsValidation);
 
   adForm.addEventListener('submit', function (evt) {
+    window.backend.save(new FormData(adForm), function () {
+      window.map.disActivatePage();
+      window.backend.showSuccessMessage();
+    }, window.backend.onLoadError);
     evt.preventDefault();
-    window.backend.save(new FormData(adForm), window.backend.errorHandler, window.backend.successMessageHandler);
-    window.map.disActivatePage();
   });
 
   adForm.addEventListener('reset', function (evt) {
