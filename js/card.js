@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-  var map = window.map.map;
   var offerTypes = {
     palace: 'Дворец',
     flat: 'Квартира',
@@ -49,7 +48,17 @@
     var mapCardElement = document.querySelector('.map__card');
     if (mapCardElement) {
       mapCardElement.remove();
+      document.removeEventListener('keydown', onPressEsc);
+      document.removeEventListener('click', onPressCloseButton);
     }
+  };
+
+  var onPressCloseButton = function () {
+    removeCard();
+  };
+
+  var onPressEsc = function (evt) {
+    window.util.isEscEvent(evt, removeCard);
   };
 
   var renderCard = function (card) {
@@ -66,15 +75,9 @@
     cardElement.querySelector('.popup__photos').innerHTML = getPhotoList(card.offer.photos);
     cardElement.querySelector('.popup__avatar').setAttribute('src', card.author.avatar);
 
-    cardElement.querySelector('.popup__close').addEventListener('click', function () {
-      map.removeChild(cardElement);
-    });
+    cardElement.querySelector('.popup__close').addEventListener('click', onPressCloseButton);
+    document.addEventListener('keydown', onPressEsc);
 
-    document.addEventListener('keydown', function (evt) {
-      if (evt.keyCode === window.util.ESC_KEYCODE) {
-        map.removeChild(cardElement);
-      }
-    });
     return cardElement;
   };
   window.card = {

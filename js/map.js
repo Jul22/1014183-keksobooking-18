@@ -5,6 +5,8 @@
   var adForm = document.querySelector('.ad-form');
   var map = document.querySelector('.map');
   var pinMain = map.querySelector('.map__pin--main');
+  var startPositionX = pinMain.offsetLeft;
+  var startPositionY = pinMain.offsetTop;
 
   pinMain.addEventListener('keydown', function (evt) {
     evt.preventDefault();
@@ -35,8 +37,6 @@
     });
   };
 
-  var startPositionX = pinMain.offsetLeft;
-  var startPositionY = pinMain.offsetTop;
   var setStartCoords = function () {
     pinMain.style.left = startPositionX + 'px';
     pinMain.style.top = startPositionY + 'px';
