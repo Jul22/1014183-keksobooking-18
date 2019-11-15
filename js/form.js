@@ -1,26 +1,26 @@
 'use strict';
 
 (function () {
-  var adForm = window.map.adForm;
-  var pinMain = window.map.pinMain;
-  var PIN_WIDTH = window.util.PIN_WIDTH;
-  var PIN_HEIGHT = window.util.PIN_HEIGHT;
   var TITLE_MINLENGTH = 30;
   var TITLE_MAXLENGTH = 100;
   var MAX_PRICE = 1000000;
   var MIN_PRICE = 0;
   var ERROR_FIELD = '4px solid red';
-  var priceInput = adForm.querySelector('#price');
-  var titleInput = adForm.querySelector('#title');
-  var roomsAmountSelector = adForm.querySelector('#room_number');
-  var guestsAmountSelector = adForm.querySelector('#capacity');
-  var houseType = adForm.querySelector('#type');
   var housingTypeMinPrice = {
     bungalo: 0,
     flat: 1000,
     house: 5000,
     palace: 10000
   };
+  var adForm = window.map.adForm;
+  var pinMain = window.map.pinMain;
+  var PIN_WIDTH = window.util.PIN_WIDTH;
+  var PIN_HEIGHT = window.util.PIN_HEIGHT;
+  var priceInput = adForm.querySelector('#price');
+  var titleInput = adForm.querySelector('#title');
+  var roomsAmountSelector = adForm.querySelector('#room_number');
+  var guestsAmountSelector = adForm.querySelector('#capacity');
+  var houseType = adForm.querySelector('#type');
 
   houseType.addEventListener('change', function (evt) {
     priceInput.value = '';
