@@ -48,7 +48,7 @@
 
   var resetCheckboxes = function (checkboxes) {
     checkboxes.forEach(function (item) {
-      if (item.checked === true) {
+      if (item.checked) {
         item.checked = false;
       }
     });

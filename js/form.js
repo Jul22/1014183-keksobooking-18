@@ -8,6 +8,7 @@
   var TITLE_MINLENGTH = 30;
   var TITLE_MAXLENGTH = 100;
   var MAX_PRICE = 1000000;
+  var MIN_PRICE = 0;
   var ERROR_FIELD = '4px solid red';
   var priceInput = adForm.querySelector('#price');
   var titleInput = adForm.querySelector('#title');
@@ -27,7 +28,7 @@
     priceInput.setAttribute('min', housingTypeMinPrice[evt.target.value]);
   });
   priceInput.setAttribute('max', MAX_PRICE);
-  priceInput.setAttribute('min', 0);
+  priceInput.setAttribute('min', MIN_PRICE);
   priceInput.setAttribute('required', '');
 
   var checkPrice = function (target) {
@@ -60,8 +61,8 @@
 
   checkTime.addEventListener('change', onChangeTime);
 
-  titleInput.setAttribute('minlength', 'TITLE_MINLENGTH');
-  titleInput.setAttribute('maxlength', 'TITLE_MAXLENGTH');
+  titleInput.setAttribute('minlength', TITLE_MINLENGTH);
+  titleInput.setAttribute('maxlength', TITLE_MAXLENGTH);
   titleInput.setAttribute('required', '');
 
   titleInput.addEventListener('change', function () {
