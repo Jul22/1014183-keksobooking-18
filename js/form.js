@@ -8,11 +8,12 @@
   var TITLE_MINLENGTH = 30;
   var TITLE_MAXLENGTH = 100;
   var MAX_PRICE = 1000000;
-  var price = adForm.querySelector('#price');
-  var title = adForm.querySelector('#title');
-  var roomsAmountSelector = adForm.querySelector('#room_number'); // Селектор выбора колличества комнат
-  var guestsAmountSelector = adForm.querySelector('#capacity'); // Селектор выбора колличества гостей
-
+  var ERROR_FIELD = '4px solid red';
+  var priceInput = adForm.querySelector('#price');
+  var titleInput = adForm.querySelector('#title');
+  var roomsAmountSelector = adForm.querySelector('#room_number');
+  var guestsAmountSelector = adForm.querySelector('#capacity');
+  var houseType = adForm.querySelector('#type');
   var housingTypeMinPrice = {
     bungalo: 0,
     flat: 1000,
@@ -20,23 +21,27 @@
     palace: 10000
   };
 
-  var houseType = adForm.querySelector('#type');
   houseType.addEventListener('change', function (evt) {
-    var priceInput = adForm.querySelector('#price');
     priceInput.value = '';
     priceInput.placeholder = housingTypeMinPrice[evt.target.value];
     priceInput.setAttribute('min', housingTypeMinPrice[evt.target.value]);
   });
-
-  price.setAttribute('max', MAX_PRICE);
-  price.setAttribute('required', '');
+  priceInput.setAttribute('max', MAX_PRICE);
+  priceInput.setAttribute('min', 0);
+  priceInput.setAttribute('required', '');
 
   var checkPrice = function (target) {
     if (housingTypeMinPrice[target.value] < target.min) {
-      price.setCustomValidity('Минимальное значение цены за ночь для данного типа жилья ' + target.min + ' рублей');
+      priceInput.setCustomValidity('Минимальное значение цены за ночь для данного типа жилья ' + target.min + ' рублей');
     }
   };
-  checkPrice(price);
+  checkPrice(priceInput);
+
+  priceInput.addEventListener('invalid', function () {
+    if (priceInput.validity.valueMissing) {
+      priceInput.style.outline = ERROR_FIELD;
+    }
+  });
 
 
   //  Время прибытия
@@ -55,19 +60,25 @@
 
   checkTime.addEventListener('change', onChangeTime);
 
-  title.setAttribute('minlength', TITLE_MINLENGTH);
-  title.setAttribute('maxlength', TITLE_MAXLENGTH);
-  title.setAttribute('required', '');
+  titleInput.setAttribute('minlength', 'TITLE_MINLENGTH');
+  titleInput.setAttribute('maxlength', 'TITLE_MAXLENGTH');
+  titleInput.setAttribute('required', '');
 
-  title.addEventListener('change', function () {
-    if (title.value.length < TITLE_MINLENGTH) {
-      title.setCustomValidity('Заголовок должен содержать не менее 30 символов');
-    } else if (title.value.length > TITLE_MAXLENGTH) {
-      title.setCustomValidity('Заголовок не должен привышать ста символов');
-    } else if (title.missingValue) {
-      title.setCustomValidity('Обязательное поле');
+  titleInput.addEventListener('change', function () {
+    if (titleInput.value.length < TITLE_MINLENGTH) {
+      titleInput.setCustomValidity('Заголовок должен содержать не менее 30 символов');
+    } else if (titleInput.value.length > TITLE_MAXLENGTH) {
+      titleInput.setCustomValidity('Заголовок не должен привышать ста символов');
+    } else if (titleInput.missingValue) {
+      titleInput.setCustomValidity('Обязательное поле');
     } else {
-      title.setCustomValidity('');
+      titleInput.setCustomValidity('');
+    }
+  });
+
+  titleInput.addEventListener('invalid', function () {
+    if (titleInput.validity.valueMissing) {
+      titleInput.style.outline = ERROR_FIELD;
     }
   });
 
@@ -82,7 +93,6 @@
   setAddress();
 
   //  Function for validation amount of guests
-
   var getMatchInputsValidation = function () {
     var roomsSelectedValue = parseInt(roomsAmountSelector[roomsAmountSelector.selectedIndex].value, 10);
     var guestsOptions = guestsAmountSelector.options;
@@ -126,6 +136,8 @@
   });
   window.form = {
     setAddress: setAddress,
-    getMatchInputsValidation: getMatchInputsValidation
+    getMatchInputsValidation: getMatchInputsValidation,
+    priceInput: priceInput,
+    titleInput: titleInput
   };
 })();
