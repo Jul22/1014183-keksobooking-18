@@ -8,14 +8,14 @@
   var housingGuests = filterForm.querySelector('#housing-guests');
   var housingFeatures = filterForm.querySelector('#housing-features');
   var Price = {
+    Value: {
+      MIN: 10000,
+      MAX: 50000
+    },
     Type: {
       LOW: 'low',
       MIDDLE: 'middle',
       HIGH: 'high'
-    },
-    Value: {
-      MIN: 10000,
-      MAX: 50000
     }
   };
 
