@@ -3,40 +3,39 @@
 (function () {
   var TITLE_MINLENGTH = 30;
   var TITLE_MAXLENGTH = 100;
-  var MAX_PRICE = 1000000;
-  var MIN_PRICE = 0;
+  var MAX_ROOMS_AMOUNT = 100;
   var ERROR_FIELD = '4px solid red';
+  var MAIN_PIN_SIZE = 62;
+  var MAIN_PIN_TAIL = 22;
+  var disabledPinHeight = MAIN_PIN_SIZE / 2;
+  var activePinHeight = MAIN_PIN_SIZE + MAIN_PIN_TAIL;
   var housingTypeMinPrice = {
-    bungalo: 0,
-    flat: 1000,
-    house: 5000,
-    palace: 10000
+    BUNGALO: '0',
+    FLAT: '1000',
+    HOUSE: '5000',
+    PALACE: '10000'
   };
   var adForm = window.map.adForm;
   var pinMain = window.map.pinMain;
-  var PIN_WIDTH = window.util.PIN_WIDTH;
-  var PIN_HEIGHT = window.util.PIN_HEIGHT;
   var priceInput = adForm.querySelector('#price');
   var titleInput = adForm.querySelector('#title');
   var roomsAmountSelector = adForm.querySelector('#room_number');
   var guestsAmountSelector = adForm.querySelector('#capacity');
   var houseType = adForm.querySelector('#type');
 
-  houseType.addEventListener('change', function (evt) {
-    priceInput.value = '';
-    priceInput.placeholder = housingTypeMinPrice[evt.target.value];
-    priceInput.setAttribute('min', housingTypeMinPrice[evt.target.value]);
-  });
-  priceInput.setAttribute('max', MAX_PRICE);
-  priceInput.setAttribute('min', MIN_PRICE);
-  priceInput.setAttribute('required', '');
+  priceInput.max = 1000000;
+  priceInput.required = true;
 
-  var checkPrice = function (target) {
-    if (housingTypeMinPrice[target.value] < target.min) {
-      priceInput.setCustomValidity('Минимальное значение цены за ночь для данного типа жилья ' + target.min + ' рублей');
-    }
+  var getHousingTypeMinPrice = function () {
+    var selectedHousingTypeValue = houseType.value.toUpperCase();
+    priceInput.min = housingTypeMinPrice[selectedHousingTypeValue];
+    priceInput.placeholder = housingTypeMinPrice[selectedHousingTypeValue];
+
   };
-  checkPrice(priceInput);
+
+  getHousingTypeMinPrice();
+
+  houseType.addEventListener('change', getHousingTypeMinPrice);
 
   priceInput.addEventListener('invalid', function () {
     if (priceInput.validity.valueMissing) {
@@ -84,10 +83,17 @@
   });
 
   // address
+  var isPageActive;
+
   var setAddress = function () {
     var addressInput = document.querySelector('input[name=address]');
 
-    addressInput.setAttribute('value', (pinMain.offsetTop + Math.floor(PIN_WIDTH / 2)) + ', ' + (pinMain.offsetLeft + Math.floor(PIN_HEIGHT / 2)));
+    var locationX = Math.round(pinMain.offsetLeft + pinMain.offsetWidth / 2);
+    var locationY = isPageActive ?
+      Math.round(parseInt(pinMain.style.top, 10) + activePinHeight) :
+      Math.round(parseInt(pinMain.offsetTop, 10) + disabledPinHeight);
+
+    addressInput.value = '' + locationX + ',' + locationY;
     addressInput.setAttribute('readonly', '');
   };
 
@@ -97,11 +103,10 @@
   var getMatchInputsValidation = function () {
     var roomsSelectedValue = parseInt(roomsAmountSelector[roomsAmountSelector.selectedIndex].value, 10);
     var guestsOptions = guestsAmountSelector.options;
-    var maxRoomsCount = 100;
     for (var i = 0; i < guestsOptions.length; i++) {
       var questsOptionValue = parseInt(guestsAmountSelector.options[i].value, 10);
 
-      if (roomsSelectedValue === maxRoomsCount) {
+      if (roomsSelectedValue === MAX_ROOMS_AMOUNT) {
         if (questsOptionValue !== 0) {
           guestsOptions[i].disabled = true;
         } else {
@@ -123,13 +128,15 @@
 
   roomsAmountSelector.addEventListener('change', getMatchInputsValidation);
 
-  adForm.addEventListener('submit', function (evt) {
+  var onAdFormSubmit = function (evt) {
     window.backend.save(new FormData(adForm), function () {
       window.map.disActivatePage();
       window.backend.showSuccessMessage();
     }, window.backend.onLoadError);
     evt.preventDefault();
-  });
+  };
+
+  adForm.addEventListener('submit', onAdFormSubmit);
 
   adForm.addEventListener('reset', function (evt) {
     evt.preventDefault();
@@ -139,6 +146,7 @@
     setAddress: setAddress,
     getMatchInputsValidation: getMatchInputsValidation,
     priceInput: priceInput,
-    titleInput: titleInput
+    titleInput: titleInput,
+    isPageActive: isPageActive,
   };
 })();

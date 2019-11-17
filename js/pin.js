@@ -15,16 +15,17 @@
     pinElement.querySelector('img').setAttribute('alt', pin.offer.title);
 
     pinElement.addEventListener('click', function () {
-      var advertisementCard = document.querySelector('.map__card');
+      var pins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
 
-      if (advertisementCard) {
-        window.map.map.removeChild(advertisementCard);
-      }
+      pins.forEach(function (item) {
+        item.classList.remove('map__pin--active');
+      });
+      pinElement.classList.add('map__pin--active');
+      window.card.removeCard();
       window.map.map.appendChild(window.card.renderCard(pin));
     });
     return pinElement;
   };
-
   var renderPins = function (serverDataArr) {
     serverDataArr.forEach(function (pin) {
       pinsContainer.appendChild(getPinElement(pin));
@@ -33,7 +34,7 @@
 
   var onLoadSuccessHandler = function (serverDataArr) {
     window.offers = serverDataArr;
-    window.pin.renderPins(window.filters.filterAll(window.offers));
+    window.pin.renderPins(window.filters.applyAll(window.offers));
   };
   window.pin = {
     getPinElement: getPinElement,

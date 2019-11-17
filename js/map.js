@@ -12,12 +12,18 @@
   var textareaElement = adForm.querySelector('#description');
   var houseType = adForm.querySelector('#type');
 
-  pinMain.addEventListener('keydown', function (evt) {
-    evt.preventDefault();
-    if (evt.keyCode === ENTER_KEYCODE) {
+  var onPressEnter = function (target) {
+    if (target === pinMain) {
       activatePage();
     }
+  };
+
+  window.addEventListener('keydown', function (evt) {
+    if (evt.keyCode === ENTER_KEYCODE) {
+      onPressEnter(evt.target);
+    }
   });
+
   var toggleFieldSets = function (fieldsetsDisabled) {
     document.querySelectorAll('fieldset').forEach(function (fieldset) {
       fieldset.disabled = fieldsetsDisabled;
@@ -30,7 +36,9 @@
     map.classList.remove('map--faded');
     adForm.classList.remove('ad-form--disabled');
     window.backend.load(window.pin.onLoadSuccessHandler, window.backend.onLoadError);
+    window.form.isPageActive = true;
     window.form.setAddress();
+    toggleSelects(false);
   };
 
   var deletePins = function () {
@@ -53,6 +61,13 @@
       }
     });
   };
+  var toggleSelects = function (selectDisabled) {
+    document.querySelectorAll('.map__filter').forEach(function (select) {
+      select.disabled = selectDisabled;
+    });
+  };
+  toggleSelects(true);
+
   var disActivatePage = function () {
     toggleFieldSets(true);
     resetCheckboxes(mapFilterCheckboxes);
@@ -62,6 +77,7 @@
     window.card.removeCard();
     deletePins();
     setStartCoords();
+    window.form.isPageActive = false;
     window.form.setAddress();
     window.upload.removeImagesFromForm();
     window.form.titleInput.value = '';

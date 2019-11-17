@@ -48,7 +48,6 @@
     var cardElement = cardTemplate.cloneNode(true);
     var photosCollectionElement = cardElement.querySelector('.popup__photos');
     var photoElement = cardElement.querySelector('.popup__photo');
-    var featuresElement = cardElement.querySelector('.popup__features');
 
     cardElement.querySelector('.popup__title').textContent = card.offer.title;
     cardElement.querySelector('.popup__text--address').textContent = card.offer.address;
@@ -58,22 +57,33 @@
     cardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + card.offer.checkin + ', выезд до ' + card.offer.checkout;
     cardElement.querySelector('.popup__description').textContent = card.offer.description;
 
-    featuresElement.innerHTML = '';
-    card.offer.features.forEach(function (item) {
-      var newFeatureElement = document.createElement('li');
-      newFeatureElement.classList.add('popup__feature');
-      newFeatureElement.classList.add('popup__feature--' + item);
-      featuresElement.append(newFeatureElement);
-    });
+    if (card.offer.features.length > 0) {
+      var featuresElement = cardElement.querySelector('.popup__features');
+      featuresElement.innerHTML = '';
+      card.offer.features.forEach(function (item) {
+        var newFeatureElement = document.createElement('li');
+        newFeatureElement.classList.add('popup__feature');
+        newFeatureElement.classList.add('popup__feature--' + item);
+        featuresElement.append(newFeatureElement);
+      });
+    } else {
+      cardElement.querySelector('.popup__features').remove();
+    }
 
-    photosCollectionElement.innerHTML = '';
-    card.offer.photos.forEach(function (item, index) {
-      var photoTemplate = photoElement.cloneNode(true);
-      photosCollectionElement.append(photoTemplate);
-      var allPhotosElement = cardElement.querySelectorAll('.popup__photo');
-      var popupPhoto = allPhotosElement[index];
-      popupPhoto.src = item;
-    });
+    if (card.offer.photos.length > 0) {
+      photosCollectionElement.innerHTML = '';
+      card.offer.photos.forEach(function (item, index) {
+        var photoTemplate = photoElement.cloneNode(true);
+        photosCollectionElement.append(photoTemplate);
+        var allPhotosElement = cardElement.querySelectorAll('.popup__photo');
+        var popupPhoto = allPhotosElement[index];
+        popupPhoto.src = item;
+      });
+    } else {
+      cardElement.querySelector('.popup__photos').remove();
+    }
+
+
     cardElement.querySelector('.popup__avatar').setAttribute('src', card.author.avatar);
 
     cardElement.querySelector('.popup__close').addEventListener('click', onPressCloseButton);
