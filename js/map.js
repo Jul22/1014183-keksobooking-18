@@ -1,47 +1,44 @@
 'use strict';
 
 (function () {
-  var ENTER_KEYCODE = window.util.ENTER_KEYCODE;
+  var MAX_OFFERS_AMOUNT = 5;
   var adForm = document.querySelector('.ad-form');
   var map = document.querySelector('.map');
-  var pinMain = map.querySelector('.map__pin--main');
-  var startPositionX = pinMain.offsetLeft;
-  var startPositionY = pinMain.offsetTop;
-  var mapFilterCheckboxes = adForm.querySelectorAll('.feature__checkbox');
-  var mapForm = document.querySelector('.map__filters');
-  var textareaElement = adForm.querySelector('#description');
-  var houseType = adForm.querySelector('#type');
+  var adFormAddress = adForm.querySelector('#address');
+  var adFormElements = adForm.querySelectorAll('.ad-form__element');
+  var adFormHeader = adForm.querySelector('.ad-form-header');
+  var filterForm = document.querySelector('.map__filters');
+  var filterFormElements = filterForm.querySelectorAll('.map__filter');
+  var featuresFilterElement = filterForm.querySelector('.map__features');
 
-  var onPressEnter = function (target) {
-    if (target === pinMain) {
-      activatePage();
-    }
-  };
-
-  window.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === ENTER_KEYCODE) {
-      onPressEnter(evt.target);
-    }
-  });
-
-  var toggleFieldSets = function (fieldsetsDisabled) {
-    document.querySelectorAll('fieldset').forEach(function (fieldset) {
-      fieldset.disabled = fieldsetsDisabled;
+  var toggleFormState = function (formElements, isDisabled) {
+    Array.from(formElements).forEach(function (item) {
+      item.disabled = isDisabled;
     });
   };
-  toggleFieldSets(true);
-
-  var activatePage = function () {
-    toggleFieldSets(false);
-    map.classList.remove('map--faded');
-    adForm.classList.remove('ad-form--disabled');
-    window.backend.load(window.pin.onLoadSuccessHandler, window.backend.onLoadError);
-    window.form.isPageActive = true;
-    window.form.setAddress();
-    toggleSelects(false);
+  var onLoadSuccess = function (response) {
+    window.data = response.map(function (item) {
+      return Object.assign(item);
+    });
+    window.pin.renderPins(window.data.slice(0, MAX_OFFERS_AMOUNT));
   };
 
-  var deletePins = function () {
+  var activatePage = function () {
+    if (!window.util.isPageActive) {
+      map.classList.remove('map--faded');
+      adForm.classList.remove('ad-form--disabled');
+      toggleFormState(adFormElements, false);
+      toggleFormState(filterFormElements, false);
+      adFormHeader.disabled = false;
+      featuresFilterElement.disabled = false;
+
+      window.backend.load(onLoadSuccess, window.backend.onLoadError);
+      window.util.isPageActive = true;
+      adFormAddress.value = window.moveMainPin.getPinLocation();
+    }
+  };
+
+  var removePins = function () {
     var pins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
     pins.forEach(function (pin) {
       var pinsContainer = document.querySelector('.map__pins');
@@ -49,51 +46,27 @@
     });
   };
 
-  var setStartCoords = function () {
-    pinMain.style.left = startPositionX + 'px';
-    pinMain.style.top = startPositionY + 'px';
-  };
-
-  var resetCheckboxes = function (checkboxes) {
-    checkboxes.forEach(function (item) {
-      if (item.checked) {
-        item.checked = false;
-      }
-    });
-  };
-  var toggleSelects = function (selectDisabled) {
-    document.querySelectorAll('.map__filter').forEach(function (select) {
-      select.disabled = selectDisabled;
-    });
-  };
-  toggleSelects(true);
 
   var disActivatePage = function () {
-    toggleFieldSets(true);
-    resetCheckboxes(mapFilterCheckboxes);
-    adForm.reset();
     map.classList.add('map--faded');
     adForm.classList.add('ad-form--disabled');
-    window.card.removeCard();
-    deletePins();
-    setStartCoords();
-    window.form.isPageActive = false;
-    window.form.setAddress();
-    window.upload.removeImagesFromForm();
-    window.form.titleInput.value = '';
-    window.form.priceInput.value = '';
-    textareaElement.value = '';
-    window.form.titleInput.setCustomValidity('', window.form.titleInput.style.outline = 'none');
-    window.form.priceInput.setCustomValidity('', window.form.priceInput.style.outline = 'none');
-    houseType.value = 'flat';
-    mapForm.reset();
+    removePins();
+    filterForm.reset();
+    adForm.reset();
+    toggleFormState(adFormElements, true);
+    toggleFormState(filterFormElements, true);
+
+    adFormHeader.disabled = true;
+    featuresFilterElement.disabled = true;
+    window.moveMainPin.setStartCoords();
+    window.util.isPageActive = false;
+    adFormAddress.value = window.moveMainPin.getPinLocation();
   };
+  disActivatePage();
+
   window.map = {
-    map: map,
-    adForm: adForm,
-    pinMain: pinMain,
     activatePage: activatePage,
     disActivatePage: disActivatePage,
-    deletePins: deletePins
+    removePins: removePins,
   };
 })();

@@ -1,8 +1,6 @@
 'use strict';
 
 (function () {
-  var PIN_WIDTH = 40;
-  var PIN_HEIGHT = 40;
   var ENTER_KEYCODE = 13;
   var ESC_KEYCODE = 27;
   var DEBOUNCE_INTERVAL = 500; // ms
@@ -28,12 +26,18 @@
     }
   };
 
+  var isEnterEvent = function (evt, action) {
+    if (evt.keyCode === ENTER_KEYCODE) {
+      action();
+    }
+  };
+
   window.util = {
-    PIN_WIDTH: PIN_WIDTH,
-    PIN_HEIGHT: PIN_HEIGHT,
+    isEnterEvent: isEnterEvent,
     ENTER_KEYCODE: ENTER_KEYCODE,
     ESC_KEYCODE: ESC_KEYCODE,
     debounce: debounce,
-    isEscEvent: isEscEvent
+    isEscEvent: isEscEvent,
+    isPageActive: false
   };
 })();

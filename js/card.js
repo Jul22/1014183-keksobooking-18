@@ -8,6 +8,8 @@
     bungalo: 'Бунгало'
   };
 
+  var pinsContainer = document.querySelector('.map__pins');
+
   var getRoomEnding = function (rooms) {
     if (rooms === 1) {
       return ' комната';
@@ -24,23 +26,6 @@
       return ' гостя';
     }
     return ' гостей';
-  };
-
-  var removeCard = function () {
-    var mapCardElement = document.querySelector('.map__card');
-    if (mapCardElement) {
-      mapCardElement.remove();
-      document.removeEventListener('keydown', onPressEsc);
-      document.removeEventListener('click', onPressCloseButton);
-    }
-  };
-
-  var onPressCloseButton = function () {
-    removeCard();
-  };
-
-  var onPressEsc = function (evt) {
-    window.util.isEscEvent(evt, removeCard);
   };
 
   var renderCard = function (card) {
@@ -86,13 +71,46 @@
 
     cardElement.querySelector('.popup__avatar').setAttribute('src', card.author.avatar);
 
-    cardElement.querySelector('.popup__close').addEventListener('click', onPressCloseButton);
-    document.addEventListener('keydown', onPressEsc);
-
     return cardElement;
   };
+
+  var removeCard = function () {
+    var activePin = document.querySelector('.map__pin--active');
+    if (activePin) {
+      activePin.classList.remove('map__pin--active');
+    }
+    var offerCard = document.querySelector('.map__card');
+    if (offerCard) {
+      offerCard.remove();
+    }
+  };
+
+  var cardEscClickHandler = function (evt) {
+    window.util.isEscEvent(evt, closeCard);
+  };
+
+  var closeCard = function () {
+    removeCard();
+    document.removeEventListener('keydown', cardEscClickHandler);
+  };
+
+  pinsContainer.addEventListener('click', function (clickEvt) {
+    var target = clickEvt.target.closest('button');
+    if (target !== null) {
+      document.addEventListener('keydown', cardEscClickHandler);
+      var closeCardBtn = document.querySelector('.popup__close');
+
+      if (closeCardBtn) {
+        closeCardBtn.addEventListener('click', closeCard);
+        closeCardBtn.addEventListener('keydown', function (evt) {
+          window.util.isEnterEvent(evt, closeCard);
+        });
+      }
+    }
+  });
+
   window.card = {
-    renderCard: renderCard,
-    removeCard: removeCard
+    removeCard: removeCard,
+    renderCard: renderCard
   };
 })();

@@ -5,26 +5,24 @@
   var TITLE_MAXLENGTH = 100;
   var MAX_ROOMS_AMOUNT = 100;
   var ERROR_FIELD = '4px solid red';
-  var MAIN_PIN_SIZE = 62;
-  var MAIN_PIN_TAIL = 22;
-  var disabledPinHeight = MAIN_PIN_SIZE / 2;
-  var activePinHeight = MAIN_PIN_SIZE + MAIN_PIN_TAIL;
   var housingTypeMinPrice = {
     BUNGALO: '0',
     FLAT: '1000',
     HOUSE: '5000',
     PALACE: '10000'
   };
-  var adForm = window.map.adForm;
-  var pinMain = window.map.pinMain;
+  var adForm = document.querySelector('.ad-form');
   var priceInput = adForm.querySelector('#price');
   var titleInput = adForm.querySelector('#title');
   var roomsAmountSelector = adForm.querySelector('#room_number');
   var guestsAmountSelector = adForm.querySelector('#capacity');
   var houseType = adForm.querySelector('#type');
+  var adFormAddress = document.querySelector('#address');
+
 
   priceInput.max = 1000000;
   priceInput.required = true;
+  adFormAddress.setAttribute('readonly', '');
 
   var getHousingTypeMinPrice = function () {
     var selectedHousingTypeValue = houseType.value.toUpperCase();
@@ -82,24 +80,6 @@
     }
   });
 
-  // address
-  var isPageActive;
-
-  var setAddress = function () {
-    var addressInput = document.querySelector('input[name=address]');
-
-    var locationX = Math.round(pinMain.offsetLeft + pinMain.offsetWidth / 2);
-    var locationY = isPageActive ?
-      Math.round(parseInt(pinMain.style.top, 10) + activePinHeight) :
-      Math.round(parseInt(pinMain.offsetTop, 10) + disabledPinHeight);
-
-    addressInput.value = '' + locationX + ',' + locationY;
-    addressInput.setAttribute('readonly', '');
-  };
-
-  setAddress();
-
-  //  Function for validation amount of guests
   var getMatchInputsValidation = function () {
     var roomsSelectedValue = parseInt(roomsAmountSelector[roomsAmountSelector.selectedIndex].value, 10);
     var guestsOptions = guestsAmountSelector.options;
@@ -130,6 +110,9 @@
 
   var onAdFormSubmit = function (evt) {
     window.backend.save(new FormData(adForm), function () {
+      window.card.removeCard();
+      window.map.removePins();
+      resetPage();
       window.map.disActivatePage();
       window.backend.showSuccessMessage();
     }, window.backend.onLoadError);
@@ -138,15 +121,24 @@
 
   adForm.addEventListener('submit', onAdFormSubmit);
 
-  adForm.addEventListener('reset', function (evt) {
-    evt.preventDefault();
+  var resetPage = function () {
+    titleInput.setCustomValidity('', window.form.titleInput.style.outline = 'none');
+    priceInput.setCustomValidity('', window.form.priceInput.style.outline = 'none');
+    houseType.value = 'flat';
+    priceInput.value = '';
+    window.upload.removeImagesFromForm();
+  };
+
+
+  adForm.addEventListener('reset', function () {
     window.map.disActivatePage();
+    resetPage();
+    window.card.removeCard();
   });
+
   window.form = {
-    setAddress: setAddress,
     getMatchInputsValidation: getMatchInputsValidation,
     priceInput: priceInput,
-    titleInput: titleInput,
-    isPageActive: isPageActive,
+    titleInput: titleInput
   };
 })();

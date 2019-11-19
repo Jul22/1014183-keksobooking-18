@@ -76,12 +76,13 @@
       .slice(0, MAX_OFFERS_AMOUNT);
   };
 
-  filterForm.addEventListener('change', window.util.debounce(function () {
-    window.map.deletePins();
+  var filterFormChangeHandler = window.util.debounce(function () {
+    window.map.removePins();
     window.card.removeCard();
-    window.pin.renderPins(window.filters.applyAll(window.offers));
-  })
-  );
+    window.pin.renderPins(applyAll(window.data));
+  });
+
+  filterForm.addEventListener('change', filterFormChangeHandler);
 
   window.filters = {
     applyAll: applyAll
