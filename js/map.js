@@ -21,14 +21,14 @@
       return Object.assign(item);
     });
     window.pin.renderPins(window.data.slice(0, MAX_OFFERS_AMOUNT));
+    toggleFormState(adFormElements, false);
+    toggleFormState(filterFormElements, false);
   };
 
   var activatePage = function () {
     if (!window.util.isPageActive) {
       map.classList.remove('map--faded');
       adForm.classList.remove('ad-form--disabled');
-      toggleFormState(adFormElements, false);
-      toggleFormState(filterFormElements, false);
       adFormHeader.disabled = false;
       featuresFilterElement.disabled = false;
 

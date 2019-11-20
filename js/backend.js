@@ -5,6 +5,8 @@
   var OK_STATUS = 200;
   var TIME_OUT = 10000;
   var mainSection = document.querySelector('main');
+  var filterFormElements = document.querySelectorAll('.map__filter');
+  var featuresFilterElement = document.querySelector('.map__features');
 
   var xhrSetup = function (onLoad, onError) {
     var xhr = new XMLHttpRequest();
@@ -47,11 +49,9 @@
     errorText.textContent = 'Произошла ошибка';
     mainSection.appendChild(errorElement);
 
-    mainSection.appendChild(errorElement);
-
     var closeErrorMessage = function () {
-      errorButton.removeEventListener('click', onCloseErrorClick);
       errorButton.addEventListener('click', function () {
+        mainSection.appendChild(errorElement);
         mainSection.removeChild(errorElement);
         window.map.disActivatePage();
       });
