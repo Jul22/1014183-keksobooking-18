@@ -50,10 +50,12 @@
     mainSection.appendChild(errorElement);
 
     var closeErrorMessage = function () {
-      mainSection.removeChild(errorElement);
-
       errorButton.removeEventListener('click', onCloseErrorClick);
-      mainSection.removeEventListener('click', onCloseErrorClick);
+      errorButton.addEventListener('click', function () {
+        var map = document.querySelector('.map');
+        mainSection.removeChild(errorElement);
+        map.classList.add('map--faded');
+      });
       document.removeEventListener('keydown', onPopupEsc);
     };
 
