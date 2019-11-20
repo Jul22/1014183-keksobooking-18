@@ -52,9 +52,8 @@
     var closeErrorMessage = function () {
       errorButton.removeEventListener('click', onCloseErrorClick);
       errorButton.addEventListener('click', function () {
-        var map = document.querySelector('.map');
         mainSection.removeChild(errorElement);
-        map.classList.add('map--faded');
+        window.map.disActivatePage();
       });
       document.removeEventListener('keydown', onPopupEsc);
     };
