@@ -5,8 +5,6 @@
   var OK_STATUS = 200;
   var TIME_OUT = 10000;
   var mainSection = document.querySelector('main');
-  var filterFormElements = document.querySelectorAll('.map__filter');
-  var featuresFilterElement = document.querySelector('.map__features');
 
   var xhrSetup = function (onLoad, onError) {
     var xhr = new XMLHttpRequest();
