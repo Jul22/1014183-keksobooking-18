@@ -4,8 +4,8 @@
   var MAIN_PIN_POSITION_X_MAX = 1200;
   var MAIN_PIN_SIZE = 62;
   var MAIN_PIN_TAIL = 22;
-  var MAIN_PIN_POSITION_Y_MIN = 130 - MAIN_PIN_TAIL;
-  var MAIN_PIN_POSITION_Y_MAX = 630 - MAIN_PIN_TAIL;
+  var MAIN_PIN_POSITION_Y_MIN = 130 - MAIN_PIN_SIZE - MAIN_PIN_TAIL;
+  var MAIN_PIN_POSITION_Y_MAX = 630 - MAIN_PIN_SIZE - MAIN_PIN_TAIL;
   var map = document.querySelector('.map');
   var pinMain = map.querySelector('.map__pin--main');
   var startPositionX = pinMain.offsetLeft;
@@ -69,11 +69,9 @@
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   });
-
   pinMain.addEventListener('keydown', function (evt) {
     window.util.isEnterEvent(evt, window.map.activatePage);
   });
-
   window.moveMainPin = {
     getPinLocation: getPinLocation,
     setStartCoords: setStartCoords,

@@ -65,6 +65,8 @@
       window.util.isEscEvent(evt, closeErrorMessage);
     };
 
+    window.data = [];
+
     errorButton.addEventListener('click', onCloseErrorClick);
     mainSection.addEventListener('click', onCloseErrorClick);
     document.addEventListener('keydown', onPopupEsc);
